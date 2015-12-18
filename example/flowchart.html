@@ -1,0 +1,27 @@
+<!-- Load dependencies first -->
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js'></script>
+<script type='text/javascript' src='http://flowchart.js.org/flowchart-latest.js'></script>
+
+<!-- For each flowchart that you want to add further controls -->
+<script type='application/json' src='flowchart_1.json' class='flowchartopt' for='flowchart_1'></script>
+
+<!-- Parse and decorate -->
+<script type='text/javascript'>
+$('.flowchart').each(function(){
+	var id = $(this).attr('id');
+	if (id){
+		var diagram = flowchart.parse($(this).text());
+		var self = $('<div class="flowchart" id="'+id+'"></div>');
+		var opt = $('script.flowchartopt[for="'+id+'"]').attr('src');
+		if (opt){
+			opt = atob(opt.substring(7+opt.indexOf('base64')));
+			opt = JSON.parse(opt.replace(/'/g, '"'));
+		}else {
+			opt = '';
+		}
+		$(this).replaceWith(self);
+		diagram.drawSVG(id, opt);
+	}
+})
+</script>
